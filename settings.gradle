@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'msa-alfa'
+
+include 'avro:avro-reader'
+include 'avro:avro-writer'
+include 'avro:consumer'
+include 'avro:producer'
+
+include 'grpc:writer'
+include 'grpc:reader'
