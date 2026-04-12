@@ -1,0 +1,1 @@
+set PATH=%PATH%;z:\tools\minikube;z:\otus\msa\Apache24\bin

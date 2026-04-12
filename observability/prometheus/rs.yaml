@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: metrics-rs-demo
+  labels:
+    app: metrics-demo
+spec:
+    replicas: 2
+    selector:
+       matchLabels:
+          app: metrics-demo
+    template:
+       metadata:
+          labels:
+            app: metrics-demo
+       spec:
+          containers:
+          - name: metrics-demo
+            image: metrics-demo:v4
+            ports:
+              - containerPort: 8089
+            livenessProbe:
+              httpGet:
+                path: /actuator/health
+                port: 8089
+              initialDelaySeconds: 10
+              periodSeconds: 3
+
