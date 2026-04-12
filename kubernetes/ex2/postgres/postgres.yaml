@@ -42,7 +42,7 @@ spec:
             value: passwd
         volumeMounts:
         - name: postgredb2
-          mountPath: /var/lib/postgresql/data
+          mountPath: /var/lib/postgresql
           subPath: postgres
   volumeClaimTemplates:
   - metadata:

@@ -10,7 +10,7 @@ def health():
 
 @app.route("/")
 def hello():
-    return 'Hello world from ' + os.environ['HOSTNAME'] + ' ! v 2021-2'
+    return 'Hello world from ' + os.environ['HOSTNAME'] + ' ! v 2026-2'
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port='80')
