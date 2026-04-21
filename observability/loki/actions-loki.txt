@@ -2,38 +2,74 @@ kubectl create namespace observability
 
 helm repo add grafana-community https://grafana-community.github.io/helm-charts
 helm repo update
-helm install RELEASE-NAME grafana-community/<chart-name>
 
-
+Надо бы брать графану из свежих чартов
 
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 
+# alloy
 
-helm upgrade --install loki grafana/loki -n observability -f loki-values.yaml
+kubectl create configmap --namespace observability alloy-config "--from-file=config.alloy=./config.alloy"
+
+(почему-то иногда блочится, помог впн)
+helm install --namespace observability alloy grafana-community/alloy -f alloy-values.yaml
+
+чтобы пересоздать конфиг
+kubectl delete --namespace observability configmap alloy-config
+kubectl create configmap --namespace observability alloy-config "--from-file=config.alloy=./config.alloy"
+грохнуть под alloy
+
+# LOKI
+
+helm install loki grafana-community/loki -n observability -f loki-values.yaml
+
+kubectl port-forward -n observability svc/loki 3100:3100
 
 helm upgrade --install grafana grafana/grafana -n observability -f grafana-values.yaml
+
+Пока надо вручную добавить заголовок
+X-Scope-OrgID: foo в свойства датасурса в графане (а точнее вручную создать новый датасурс)
+http://loki-gateway.observability.svc.cluster.local/
 
 kubectl port-forward -n observability svc/grafana 3000:80
 admin/admin123
 
+kubectl apply -f ..\prometheus\rs.yaml -n observability
+kubectl apply -f ..\prometheus\service.yaml -n observability
+minikube.exe service metrics-demo -n observability
+
+FOR /L %N IN () DO z:\otus\msa\Apache24\bin\ab.exe -n 50 -c 10 http://127.0.0.1:52505/api/a # аналогично поменять урл
+
+# Запросы
+
+{container="metrics-demo"}
+{container="metrics-demo", pod="metrics-rs-demo-28tf9"}
+{container="metrics-demo"} |= "Request"
+{container="metrics-demo"} != "Request"
+{container="metrics-demo"} |~ "req.*"
+{container="metrics-demo"} !~ "req.*"
+
+rate({container="metrics-demo"} |= "Request"[2m])
+rate({container="metrics-demo"} |= "Error in"[2m])
+sum(rate({container="metrics-demo"} |= "Request"[2m]))
+
+{container="metrics-demo"} |= "Request " | logfmt
+
+
 ```
-z:\otus\msa-alfa\observability\loki>helm upgrade --install loki grafana/loki -n observability -f loki-values.yaml
-Release "loki" does not exist. Installing it now.
-W0413 19:21:27.247157   87436 warnings.go:70] spec.SessionAffinity is ignored for headless services
-W0413 19:21:27.247157   87436 warnings.go:70] spec.SessionAffinity is ignored for headless services
-W0413 19:21:27.247157   87436 warnings.go:70] spec.SessionAffinity is ignored for headless services
 NAME: loki
-LAST DEPLOYED: Mon Apr 13 19:21:24 2026
+LAST DEPLOYED: Wed Apr 15 06:58:31 2026
 NAMESPACE: observability
 STATUS: deployed
 REVISION: 1
+TEST SUITE: None
 NOTES:
 ***********************************************************************
  Welcome to Grafana Loki
- Chart version: 6.55.0
+ Chart version: 12.0.0
  Chart Name: loki
- Loki version: 3.6.7
+ Loki version: 3.7.1
 ***********************************************************************
 
 ** Please be patient while the chart is being deployed **
@@ -47,15 +83,10 @@ If pods are taking too long to schedule make sure pod affinity can be fulfilled 
 ***********************************************************************
 Installed components:
 ***********************************************************************
-* gateway
-* compactor
-* index gateway
-* query scheduler
-* ruler
-* distributor
-* ingester
-* querier
-* query frontend
+* loki
+
+Loki has been deployed as a single binary.
+This means a single pod is handling reads and writes. You can scale that pod vertically by adding more CPU and memory resources.
 
 
 ***********************************************************************
@@ -111,10 +142,4 @@ You can also use a reverse proxy, to automatically add the `X-Scope-OrgID` heade
 For more information, read our documentation about multi-tenancy: https://grafana.com/docs/loki/latest/operations/multi-tenancy/
 
 > When using curl you can pass `X-Scope-OrgId` header using `-H X-Scope-OrgId:foo` option, where foo can be replaced with the tenant of your choice.
-
-z:\otus\msa-alfa\observability\loki>
-
-
-
-
 ```

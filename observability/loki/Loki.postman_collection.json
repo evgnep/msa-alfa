@@ -1,0 +1,92 @@
+{
+  "info": {
+    "_postman_id": "6c6a32a7-ae4a-4ea5-86d5-e485129b2ada",
+    "name": "Loki",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "16568781"
+  },
+  "item": [
+    {
+      "name": "send log",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Scope-OrgId",
+            "value": "foo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"streams\": [\r\n        {\r\n            \"stream\": {\r\n                \"job\": \"test\"\r\n            },\r\n            \"values\": [\r\n                [\r\n                   \"1776226304000000000\", \"Something happened in the system\"\r\n                ]\r\n            ]\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:3100/loki/api/v1/push",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "3100",
+          "path": [
+            "loki",
+            "api",
+            "v1",
+            "push"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "read",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Scope-OrgId",
+            "value": "foo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "query",
+              "value": "{job=\"test\"}",
+              "type": "text",
+              "uuid": "c6450512-32ac-4af9-9b32-40781b3fa8fb"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://127.0.0.1:3100/loki/api/v1/query_range",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "3100",
+          "path": [
+            "loki",
+            "api",
+            "v1",
+            "query_range"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
