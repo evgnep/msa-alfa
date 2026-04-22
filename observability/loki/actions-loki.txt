@@ -26,6 +26,8 @@ helm install loki grafana-community/loki -n observability -f loki-values.yaml
 
 kubectl port-forward -n observability svc/loki 3100:3100
 
+# Grafana
+
 helm upgrade --install grafana grafana/grafana -n observability -f grafana-values.yaml
 
 Пока надо вручную добавить заголовок
@@ -44,6 +46,8 @@ FOR /L %N IN () DO z:\otus\msa\Apache24\bin\ab.exe -n 50 -c 10 http://127.0.0.1:
 # Запросы
 
 {container="metrics-demo"}
+{container!="metrics-demo"}
+{container=~"metrics.*"}
 {container="metrics-demo", pod="metrics-rs-demo-28tf9"}
 {container="metrics-demo"} |= "Request"
 {container="metrics-demo"} != "Request"
@@ -54,7 +58,9 @@ rate({container="metrics-demo"} |= "Request"[2m])
 rate({container="metrics-demo"} |= "Error in"[2m])
 sum(rate({container="metrics-demo"} |= "Request"[2m]))
 
-{container="metrics-demo"} |= "Request " | logfmt
+{container="metrics-demo"} |= "Request " | logfmt | reqIndex=480
+sum by (method) (rate({container="metrics-demo"} | logfmt [2m]))
+sum by (method) (rate({container="metrics-demo"} | logfmt | method != "" [2m]))
 
 
 ```

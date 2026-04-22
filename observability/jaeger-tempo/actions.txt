@@ -1,0 +1,43 @@
+=== opentelemetry
+
+git clone https://github.com/open-telemetry/opentelemetry-demo.git
+
+cd opentelemetry-demo
+
+docker compose up --force-recreate --remove-orphans --detach
+(минут 20 запускается в первый раз)
+
+Web store: http://localhost:8080/
+Grafana: http://localhost:8080/grafana/
+  Dashboards\Demo\APM Dashboard (Jaeger, Prometheus, OpenSearch)
+Jaeger UI: http://localhost:8080/jaeger/ui/
+
+=== tempo
+wsl ~/otus/monitoring/tempo-otel-example
+
+== как поднять
+все делаем в wsl
+https://github.com/joe-elliott/tempo-otel-example
+git clone https://github.com/joe-elliott/tempo-otel-example.git
+
+sudo apt update
+sudo apt install golang-go
+
+docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+
+./build.sh
+
+docker-compose up -d
+
+несколько раз сделать curl http://localhost:8000/
+
+дальше в браузере
+http://localhost:3000/explore
+
+Можно посмотреть метрики в прометее
+histogram_quantile(.99, sum(rate(demo_request_latency_seconds_bucket[1m])) by (le))
+
+При наведении на точку будет traceId, он кликабелен
+
+
+

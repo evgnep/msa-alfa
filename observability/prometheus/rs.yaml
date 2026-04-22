@@ -16,7 +16,7 @@ spec:
        spec:
           containers:
           - name: metrics-demo
-            image: metrics-demo:v6
+            image: metrics-demo:v7
             ports:
               - containerPort: 8089
             livenessProbe:

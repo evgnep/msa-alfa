@@ -17,7 +17,7 @@ class Controller(private val healthIndicator: CustomHealthIndicator) {
 
     private fun doSomething(res: String, from: Int, to: Int): String {
         val reqIndex = this.counter.incrementAndGet()
-        log.info("Request method=$res, from=$from, to=$to, reqIndex=$reqIndex")
+        log.info("Request method=$res from=$from to=$to reqIndex=$reqIndex")
         val timeout = random.nextLong(from.toLong(), to.toLong())
         Thread.sleep(timeout)
         val error = random.nextInt(10)

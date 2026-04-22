@@ -97,5 +97,14 @@ loki.process "pod_logs" {
       }
   }
 
+//  forward_to = [loki.write.loki.receiver]
+  forward_to = [loki.process.multiline.receiver]
+}
+
+loki.process "multiline" {
+  stage.multiline {
+    firstline = "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} "
+  }
+
   forward_to = [loki.write.loki.receiver]
 }
