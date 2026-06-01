@@ -16,3 +16,4 @@ include 'grpc:writer'
 include 'grpc:reader'
 
 include 'kafka'
+include 'auth-demo'

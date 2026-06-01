@@ -7,6 +7,8 @@ slf4j = "2.0.7"
 logback = "1.4.12"
 protobuf = "4.33.4"
 grpc = "1.78.0"
+springBoot = "3.4.0"
+springDependencyManagement = "1.1.5"
 
 [libraries]
 avro = { group = "org.apache.avro", name = "avro", version.ref = "avro" }
@@ -24,7 +26,13 @@ protocgen-grpc-java = { group = "io.grpc", name = "protoc-gen-grpc-java", versio
 grpc-netty = { group = "io.grpc", name = "grpc-netty", version.ref = "grpc" }
 grpc-protobuf = { group = "io.grpc", name = "grpc-protobuf", version.ref = "grpc" }
 grpc-stub = { group = "io.grpc", name = "grpc-stub", version.ref = "grpc" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBoot" }
+spring-boot-starter-oauth2-resource-server = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server", version.ref = "springBoot" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 
 [plugins]
 avro = { id = "eu.eventloopsoftware.avro-gradle-plugin", version = "0.1.1" }
 protobuf = "com.google.protobuf:0.9.4"
+spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
