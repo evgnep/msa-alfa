@@ -8,3 +8,9 @@ spring:
         jwt:
           jwk-set-uri: http://localhost:8080/realms/demo/protocol/openid-connect/certs
           issuer-uri: http://localhost:8080/realms/demo
+
+app:
+  keycloak:
+    client-id: demo-client
+    client-secret: CPxusYYfXSMc6da8XpIhwndUGokCxNw2
+    token-uri: http://localhost:8080/realms/demo/protocol/openid-connect/token

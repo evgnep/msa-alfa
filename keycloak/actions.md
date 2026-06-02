@@ -15,6 +15,8 @@ docker run --name keycloak -p 127.0.0.1:8080:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME
    Authorization: Off
    Standard flow: On
    Direct access grants: On
+   Client authentication: On
+   Service accounts roles: On
    На вкладке Credentials смотрим секрет 
 
 
@@ -35,6 +37,19 @@ http://localhost:8080/realms/demo/account/account-security/device-activity
 Можно разлогиниться, теперь при попытке запросить токен по refresh-токену мы получим ошибку
 
 Можно заново запросить новую пару по логину и паролюЧто 
+
+# Токен для клиента (confidental)
+
+См ex2
+
+# Проверка токена в сервисе
+
+* Запустить AuthDemoApplication
+* ex3 - /public /admin /profile
+
+#  Межсервисная аутентификация
+
+ex4, ex5
 
 
 
